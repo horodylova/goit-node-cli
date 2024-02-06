@@ -1,4 +1,11 @@
 import { program } from "commander";
+import { listContacts, getContactById } from "./contacts";
+
+const path = require("path");
+const fs = require("fs/promises");
+
+const contactsPath = path.join(__dirname, "db", "contacts.json");
+
 program
   .option("-a, --action <type>", "choose action")
   .option("-i, --id <type>", "user id")
@@ -10,28 +17,34 @@ program.parse();
 
 const options = program.opts();
 
-// TODO: рефакторити
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-     const allContacts = await contacts.listContacts()
+      const allContacts = await listContacts();
+      console.log(allContacts);
       break;
 
     case "get":
-      // ... id
+      const oneContact = await getContactById(id);
+      if (oneContact) {
+        console.log(oneContact);
+      } else {
+        console.log("Contact not found");
+      }
       break;
 
     case "add":
-      // ... name email phone
       break;
 
     case "remove":
-      // ... id
       break;
 
-    default:
-      console.warn("\x1B[31m Unknown action type!");
   }
 }
 
 invokeAction(options);
+
+
+ 
+
+
