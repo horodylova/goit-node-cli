@@ -1,10 +1,5 @@
-import { program } from "commander";
-import { listContacts, getContactById } from "./contacts";
-
-const path = require("path");
-const fs = require("fs/promises");
-
-const contactsPath = path.join(__dirname, "db", "contacts.json");
+const { program } = require("commander");
+const { listContacts, getContactById, addContact, removeContact } = require("./contacts");
 
 program
   .option("-a, --action <type>", "choose action")
@@ -22,25 +17,30 @@ async function invokeAction({ action, id, name, email, phone }) {
     case "list":
       const allContacts = await listContacts();
       console.log(allContacts);
-
+      break;
 
     case "get":
       const oneContact = await getContactById(id);
       console.log(oneContact);
-    
+      break;
 
     case "add":
-     const newContact = await addContactById(name, email, phone);
-     console.log(newContact);
-
+      const newContact = await addContact({ name, email, phone });
+      console.log(newContact);
+      break;
 
     case "remove":
-      
+      const deleteContact = await removeContact(id);
+      console.log(deleteContact);
+      break;
 
+    default:
+      console.warn("\x1B[31m Unknown action type!");
   }
 }
 
 invokeAction(options);
+
 
 
  
