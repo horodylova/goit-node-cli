@@ -33,8 +33,8 @@ async function invokeAction({ action, id, name, email, phone }) {
       const deleteContact = await removeContact(id);
       console.log(deleteContact);
 
-
-    
+      default:
+        console.warn("Unknown action type");
   }
 }
 
